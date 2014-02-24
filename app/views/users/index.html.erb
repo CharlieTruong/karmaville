@@ -14,16 +14,13 @@
 
 <div class="pagination">
   <ul>
-    <li><a href="#">Prev</a></li>
+    <li id="prev"><a href="?page=<%=@current_page-1%>">Prev</a></li>
     <% pages = [*1..(User.count/1000)] %>
     <% pages.each do |page| %>
-      <li id=<%=page%>><a href="?page=<%= page %>"><%= page %></a></li>
-<!--     <li class="active"><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li> -->
+      <li id=<%=page%>>
+        <a href="?page=<%= page %>"><%= page %></a>
+      </li>
     <% end %>
-    <li><a href="#">Next</a></li>
+    <li id="next" data-last="<%=pages.last%>"><a href="?page=<%=@current_page+1%>">Next</a></li>
   </ul>
 </div>

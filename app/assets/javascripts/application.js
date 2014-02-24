@@ -16,6 +16,18 @@
 //= require_tree .
 $(document).ready(function(){
 
+  if(getUrlVars()["page"] === "1"){
+    $("#prev").addClass("disabled");
+    $("#prev a").attr("href","#");
+    $('#prev a').bind('click', disableLink)
+  }
+
+  if(getUrlVars()["page"] === String($("#next").data("last"))){
+    $("#next").addClass("disabled");
+    $('#next a').bind('click', disableLink)
+  }
+
+
   $("#"+getUrlVars()["page"]).addClass("active");
 
 
@@ -32,5 +44,10 @@ function getUrlVars()
         vars[hash[0]] = hash[1];
     }
     return vars;
+}
+
+function disableLink(e) {
+    e.preventDefault();
+    return false;
 }
 
