@@ -21,10 +21,23 @@ class User < ActiveRecord::Base
 #iterate over these
 #update a user's total karma with the total karma that got calculated here
   def self.by_karma
-    select('first_name,last_name,username,email,total_karma').joins(:total_karma_pt).order('total_karma_pts.id')
+    select('users.id, first_name,last_name,username,email,total_karma').joins(:total_karma_pt).order('total_karma_pts.id')
   end
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def total_karma
+    total_karma_pt.nil? ? 0 : total_karma_pt.total_karma
+  end
+
+  def self.page(num=nil)
+    if num != nil && num > 0
+      offset = (num - 1) * 1000
+      limit(1000).offset(offset)
+    else
+      limit(1000)
+    end
   end
 end

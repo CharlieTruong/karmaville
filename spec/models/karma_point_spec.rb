@@ -15,12 +15,10 @@ describe KarmaPoint do
   end
 
   describe '#save' do
-    let(:user) { create(:user) }
-
     it "increments the user's total_karma by the value of the karma point" do
-      expect {
-        create(:karma_point, :user => user, :value => 10)
-      }.to change(user, :total_karma).by(10)
+      user = User.create(first_name: "Dave", last_name: "Noname", username: "doenoname", email: "doe@dbc.com")
+      KarmaPoint.create(user_id: user.id, value: 10, label: "whatever")
+      expect(user.total_karma).to eq(10)
     end
   end
 end

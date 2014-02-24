@@ -22,9 +22,12 @@ describe User do
 
   describe '.by_karma' do
     it 'returns users in order of highest-to-lowest karma' do
-      user_med   = create(:user_with_karma, :total => 500, :points => 2)
-      user_low   = create(:user_with_karma, :total => 200, :points => 2)
-      user_high  = create(:user_with_karma, :total => 800, :points => 2)
+      user_med   = User.create(first_name: "Joe", last_name: "Noname", username: "Joenoname", email: "joe@dbc.com")
+      user_low   = User.create(first_name: "Laura", last_name: "Noname", username: "loenoname", email: "loe@dbc.com")
+      user_high  = User.create(first_name: "Charlie", last_name: "Noname", username: "coenoname", email: "coe@dbc.com")
+      TotalKarmaPt.create(user_id: user_high.id, total_karma: 1000)
+      TotalKarmaPt.create(user_id: user_med.id, total_karma: 500)
+      TotalKarmaPt.create(user_id: user_low.id, total_karma: 100)
 
       User.by_karma.should eq [user_high, user_med, user_low]
     end
@@ -47,5 +50,19 @@ describe User do
 
       user.full_name.should eq 'John Doe'
     end
+  end
+
+  describe '#page' do
+
+    it 'returns the first page of users when there is no input' do
+      user = User.create(first_name: "Joe", last_name: "Noname", username: "Joenoname", email: "joe@dbc.com")
+      User.page.should eq([user])
+    end
+
+    it 'offsets users by 1000 when we look at the next page' do
+      user = User.create(first_name: "Joe", last_name: "Noname", username: "Joenoname", email: "joe@dbc.com")
+      User.page(2).should eq([])
+    end
+
   end
 end

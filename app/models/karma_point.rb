@@ -9,9 +9,13 @@ class KarmaPoint < ActiveRecord::Base
   after_destroy :decrement_total_karma
 
   def increment_total_karma
-    total_karma_pt = TotalKarmaPt.find_by_user_id(user_id)
-    total_karma_pt.total_karma += value
-    total_karma_pt.save
+    if TotalKarmaPt.find_by_user_id(user_id)
+      total_karma_pt = TotalKarmaPt.find_by_user_id(user_id)
+      total_karma_pt.total_karma += value
+      total_karma_pt.save
+    else
+      TotalKarmaPt.create(user_id: user_id, total_karma: value)
+    end
   end
 
   def decrement_total_karma
