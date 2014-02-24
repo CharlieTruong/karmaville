@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
 #iterate over these
 #update a user's total karma with the total karma that got calculated here
   def self.by_karma
-    select('first_name,last_name,username,email,total_karma').joins(:total_karma_pt).order('total_karma DESC')
+    select('first_name,last_name,username,email,total_karma').joins(:total_karma_pt).order('total_karma_pts.id')
   end
 
   def full_name
