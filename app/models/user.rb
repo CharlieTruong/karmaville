@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :karma_points
+  has_one :total_karma_pt
 
   attr_accessible :first_name, :last_name, :email, :username
 
@@ -20,14 +21,8 @@ class User < ActiveRecord::Base
 #iterate over these
 #update a user's total karma with the total karma that got calculated here
   def self.by_karma
-    # joins(:karma_points).group('users.id').order('SUM(karma_points.value) DESC')
-    karma_objs = KarmaPoint.select("user_id,sum(value) as total_karma").group(:user_id).order("SUM(value) DESC").limit(50)
-    users = karma_objs.map{|karma_obj| karma_obj.user}
+    select('first_name,last_name,username,email,total_karma').joins(:total_karma_pt).order('total_karma DESC')
   end
-
-  # def total_karma
-  #   self.karma_points.sum(:value)
-  # end
 
   def full_name
     "#{first_name} #{last_name}"
